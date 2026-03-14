@@ -104,7 +104,7 @@ export default function Dashboard() {
 
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="lg:col-span-2">
-            <TopClientsChart data={filteredData} />
+            <TopClientsChart data={filteredData} selectedClient={selectedClient} />
           </div>
         </section>
 
