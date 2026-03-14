@@ -2,7 +2,6 @@ services:
   - type: web
     name: dash-lfs
     env: static
-    plan: free
     buildCommand: cd dashboard-app && npm install && npm run build
     staticPublishPath: ./dashboard-app/dist
     autoDeploy: true
