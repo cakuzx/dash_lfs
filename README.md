@@ -44,3 +44,13 @@ Dashboard interactivo y profesional para el análisis de historial de compras, d
 ## Desarrollo
 
 El proyecto utiliza un diseño premium con modo claro, sombras suaves y transiciones fluidas para una experiencia de usuario superior.
+
+## Despliegue en Render.com
+
+Este proyecto incluye un archivo `render.yaml` (Blueprint) para un despliegue automático:
+
+1. Conecta tu repositorio de GitHub a Render.
+2. Render detectará automáticamente el archivo `render.yaml`.
+3. El dashboard se desplegará como un **Static Site**.
+
+La ruta de construcción es `./dashboard-app/dist` y el comando de construcción es automático según el archivo de configuración.
