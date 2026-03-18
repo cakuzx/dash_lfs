@@ -50,11 +50,15 @@ export function DataImport({ onDataUpdate }) {
         onDataUpdate(processedData);
         setSuccess(`¡Éxito! Se cargaron ${processedData.length} registros.`);
         
+        // Limpiar mensaje después de 5 segundos
+        setTimeout(() => setSuccess(null), 5000);
+
         // Limpiar input
         if (fileInputRef.current) fileInputRef.current.value = '';
       } catch (err) {
         console.error('Error procesando archivo:', err);
         setError('Error al procesar el archivo. Asegúrate de que sea un Excel o CSV válido.');
+        setTimeout(() => setError(null), 5000);
       } finally {
         setIsProcessing(false);
       }
