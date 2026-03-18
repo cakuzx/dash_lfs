@@ -16,13 +16,13 @@ export function SalesChart({ data }) {
       grouped[period].total += (item.total || 0);
       grouped[period].base += (item.base || 0);
     });
-    return Object.values(grouped).sort((a, b) => a.period.localeCompare(b.period));
+    return Object.values(grouped).sort((a, b) => String(a.period).localeCompare(String(b.period)));
   }, [data]);
 
   const fmt = (v) => {
-    if (v >= 1000000) return `S/${(v / 1000000).toFixed(1)}M`;
-    if (v >= 1000)    return `S/${(v / 1000).toFixed(0)}k`;
-    return `S/${v}`;
+    if (v >= 1000000) return `$ ${(v / 1000000).toFixed(1)}M`;
+    if (v >= 1000)    return `$ ${(v / 1000).toFixed(0)}k`;
+    return `$ ${v}`;
   };
 
   const CustomTooltip = ({ active, payload, label }) => {

@@ -29,21 +29,21 @@ export function SummaryCards({ data }) {
   const cards = [
     {
       title: 'Ventas Totales',
-      value: `S/ ${metrics.sales >= 1000000 ? (metrics.sales / 1000000).toFixed(2) + 'M' : (metrics.sales / 1000).toFixed(1) + 'k'}`,
+      value: `$ ${metrics.sales >= 1000000 ? (metrics.sales / 1000000).toFixed(2) + 'M' : (metrics.sales / 1000).toFixed(1) + 'k'}`,
       icon: DollarSign,
       color: 'bg-emerald-500',
       description: 'Ingresos totales con IGV'
     },
     {
       title: 'Base Imponible',
-      value: `S/ ${metrics.base >= 1000000 ? (metrics.base / 1000000).toFixed(2) + 'M' : (metrics.base / 1000).toFixed(1) + 'k'}`,
+      value: `$ ${metrics.base >= 1000000 ? (metrics.base / 1000000).toFixed(2) + 'M' : (metrics.base / 1000).toFixed(1) + 'k'}`,
       icon: Receipt,
       color: 'bg-blue-500',
       description: 'Ingresos netos sin IGV'
     },
     {
       title: 'Ticket Promedio',
-      value: `S/ ${metrics.avgSale.toFixed(0)}`,
+      value: `$ ${metrics.avgSale.toFixed(0)}`,
       icon: Percent,
       color: 'bg-purple-500',
       description: 'Por transacción'

@@ -30,7 +30,7 @@ export function VendorPerformance({ data }) {
         <div className="bg-white p-3 rounded-xl shadow-lg border border-slate-100">
           <p className="font-semibold text-slate-700 text-sm mb-1">{label}</p>
           <div className="text-indigo-600 font-bold">
-            S/ {payload[0].value >= 1000000 ? (payload[0].value / 1000000).toFixed(2) + 'M' : payload[0].value.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+            $ {payload[0].value >= 1000000 ? (payload[0].value / 1000000).toFixed(2) + 'M' : payload[0].value.toLocaleString(undefined, { maximumFractionDigits: 0 })}
           </div>
         </div>
       );

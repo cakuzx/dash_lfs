@@ -51,7 +51,7 @@ export function TopClientsChart({ data, selectedClient }) {
   }, [data, selectedClient]);
 
   const formatCurrency = (v) =>
-    v >= 1000000 ? `S/ ${(v / 1000000).toFixed(2)}M` : `S/ ${v.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+    v >= 1000000 ? `$ ${(v / 1000000).toFixed(2)}M` : `$ ${v.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
 
   const CustomTooltipDetail = ({ active, payload, label }) => {
     if (!active || !payload?.length) return null;
@@ -111,7 +111,7 @@ export function TopClientsChart({ data, selectedClient }) {
                 axisLine={false} 
                 tickLine={false}
                 tick={{ fill: '#64748b', fontSize: 11 }}
-                tickFormatter={(v) => v >= 1000000 ? `S/${(v/1000000).toFixed(1)}M` : v >= 1000 ? `S/${(v/1000).toFixed(0)}k` : v}
+                tickFormatter={(v) => v >= 1000000 ? `$ ${(v/1000000).toFixed(1)}M` : v >= 1000 ? `$ ${(v/1000).toFixed(0)}k` : v}
               />
               <Tooltip content={<CustomTooltipDetail />} />
               <Legend 

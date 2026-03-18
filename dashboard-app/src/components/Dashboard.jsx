@@ -5,36 +5,38 @@ import { SalesChart } from './SalesChart';
 import { VendorPerformance } from './VendorPerformance';
 import { TopClientsChart } from './TopClientsChart';
 import { Filters } from './Filters';
+import { DataImport } from './DataImport';
 import { LayoutDashboard } from 'lucide-react';
 
 export default function Dashboard() {
+  const [data, setData] = useState(rawData);
   const [selectedYear, setSelectedYear] = useState('All');
   const [selectedVendor, setSelectedVendor] = useState('All');
   const [selectedClient, setSelectedClient] = useState('All');
   const [selectedPaymentType, setSelectedPaymentType] = useState('All');
 
   const availableYears = useMemo(() => {
-    const years = new Set(rawData.map(d => d.year).filter(y => y !== 0 && y !== null));
+    const years = new Set(data.map(d => d.year).filter(y => y !== 0 && y !== null));
     return ['All', ...Array.from(years).sort()];
-  }, []);
+  }, [data]);
 
   const availableVendors = useMemo(() => {
-    const vendors = new Set(rawData.map(d => d.vendor).filter(v => v !== 'Desconocido' && v !== null));
+    const vendors = new Set(data.map(d => d.vendor).filter(v => v !== 'Desconocido' && v !== null));
     return ['All', ...Array.from(vendors).sort()];
-  }, []);
+  }, [data]);
 
   const availableClients = useMemo(() => {
-    const clients = new Set(rawData.map(d => d.client).filter(c => c !== 'Desconocido' && c !== null));
+    const clients = new Set(data.map(d => d.client).filter(c => c !== 'Desconocido' && c !== null));
     return ['All', ...Array.from(clients).sort()];
-  }, []);
+  }, [data]);
 
   const availablePaymentTypes = useMemo(() => {
-    const types = new Set(rawData.map(d => d.paymentType).filter(t => t && t !== ''));
+    const types = new Set(data.map(d => d.paymentType).filter(t => t && t !== ''));
     return ['All', ...Array.from(types).sort()];
-  }, []);
+  }, [data]);
 
   const filteredData = useMemo(() => {
-    const result = rawData.filter(item => {
+    const result = data.filter(item => {
       const matchYear = selectedYear === 'All' || item.year.toString() === selectedYear.toString();
       const matchVendor = selectedVendor === 'All' || item.vendor === selectedVendor;
       const matchClient = selectedClient === 'All' || item.client === selectedClient;
@@ -45,7 +47,16 @@ export default function Dashboard() {
       year: selectedYear, vendor: selectedVendor, client: selectedClient, payment: selectedPaymentType
     });
     return result;
-  }, [selectedYear, selectedVendor, selectedClient, selectedPaymentType]);
+  }, [data, selectedYear, selectedVendor, selectedClient, selectedPaymentType]);
+
+  const handleDataUpdate = (newData) => {
+    setData(newData);
+    // Reset filters when new data is loaded
+    setSelectedYear('All');
+    setSelectedVendor('All');
+    setSelectedClient('All');
+    setSelectedPaymentType('All');
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -60,7 +71,10 @@ export default function Dashboard() {
                 LFS Sales Dashboard
               </h1>
             </div>
-            <div className="flex items-center space-x-4">
+            
+            <div className="hidden md:flex items-center space-x-6">
+              <DataImport onDataUpdate={handleDataUpdate} />
+              <div className="h-8 w-px bg-slate-200"></div>
               <span className="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
                 {filteredData.length.toLocaleString()} Registros
               </span>
@@ -71,6 +85,10 @@ export default function Dashboard() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
+        <div className="md:hidden bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-4">
+           <DataImport onDataUpdate={handleDataUpdate} />
+        </div>
+
         <section className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100/50 backdrop-blur-sm relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2"></div>
           <Filters 
