@@ -1,12 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
-import { Upload, FileSpreadsheet, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
+import { Upload, FileSpreadsheet, AlertCircle, CheckCircle2, Loader2, X } from 'lucide-react';
 
 export function DataImport({ onDataUpdate }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const fileInputRef = useRef(null);
+
+  // Limpiar mensajes automáticamente después de 5 segundos
+  useEffect(() => {
+    if (success || error) {
+      const timer = setTimeout(() => {
+        setSuccess(null);
+        setError(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, error]);
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -50,15 +61,11 @@ export function DataImport({ onDataUpdate }) {
         onDataUpdate(processedData);
         setSuccess(`¡Éxito! Se cargaron ${processedData.length} registros.`);
         
-        // Limpiar mensaje después de 5 segundos
-        setTimeout(() => setSuccess(null), 5000);
-
         // Limpiar input
         if (fileInputRef.current) fileInputRef.current.value = '';
       } catch (err) {
         console.error('Error procesando archivo:', err);
         setError('Error al procesar el archivo. Asegúrate de que sea un Excel o CSV válido.');
-        setTimeout(() => setError(null), 5000);
       } finally {
         setIsProcessing(false);
       }
@@ -107,16 +114,26 @@ export function DataImport({ onDataUpdate }) {
       </div>
 
       {error && (
-        <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 p-2 rounded-md border border-red-100">
-          <AlertCircle size={16} />
-          <span>{error}</span>
+        <div className="flex items-center justify-between gap-2 text-red-600 text-sm bg-red-50 p-2 rounded-md border border-red-100 animate-in fade-in duration-300">
+          <div className="flex items-center gap-2">
+            <AlertCircle size={16} />
+            <span>{error}</span>
+          </div>
+          <button onClick={() => setError(null)} className="text-red-400 hover:text-red-600">
+            <X size={14} />
+          </button>
         </div>
       )}
 
       {success && (
-        <div className="flex items-center gap-2 text-green-600 text-sm bg-green-50 p-2 rounded-md border border-green-100 animate-in fade-in duration-500">
-          <CheckCircle2 size={16} />
-          <span>{success}</span>
+        <div className="flex items-center justify-between gap-2 text-green-600 text-sm bg-green-50 p-2 rounded-md border border-green-100 animate-in fade-in duration-500">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 size={16} />
+            <span>{success}</span>
+          </div>
+          <button onClick={() => setSuccess(null)} className="text-green-400 hover:text-green-600">
+            <X size={14} />
+          </button>
         </div>
       )}
     </div>
