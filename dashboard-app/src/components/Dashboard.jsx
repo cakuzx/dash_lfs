@@ -9,7 +9,17 @@ import { DataImport } from './DataImport';
 import { LayoutDashboard } from 'lucide-react';
 
 export default function Dashboard() {
-  const [data, setData] = useState(rawData);
+  const [data, setData] = useState(() => {
+    try {
+      const saved = localStorage.getItem('lfs_dashboard_data');
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.error('Error loading data from localStorage', e);
+    }
+    return rawData;
+  });
   const [selectedYear, setSelectedYear] = useState('All');
   const [selectedVendor, setSelectedVendor] = useState('All');
   const [selectedClient, setSelectedClient] = useState('All');
@@ -51,6 +61,12 @@ export default function Dashboard() {
 
   const handleDataUpdate = (newData) => {
     setData(newData);
+    try {
+      localStorage.setItem('lfs_dashboard_data', JSON.stringify(newData));
+    } catch (e) {
+      console.error('Error saving to localStorage', e);
+      // Opcional: mostrar alerta si excede el espacio (5MB aprox)
+    }
     // Reset filters when new data is loaded
     setSelectedYear('All');
     setSelectedVendor('All');
